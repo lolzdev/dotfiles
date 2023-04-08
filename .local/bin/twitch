@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Software encoding stream script
+
+URL="rtmp://mil02.contribute.live-video.net/app"
+STREAM_KEY=$( cat $HOME/documents/.streamkey )
+
+ffmpeg -f sndio -thread_queue_size 4096 -i snd/0.mon \
+    -f sndio -thread_queue_size 4096 -i snd/0 \
+    -filter_complex amix=inputs=2:duration=first:dropout_transition=2 \
+    -y -f x11grab -framerate 69 -thread_queue_size 8000 -s 1920x1080 -i :0 \
+    -c:v libx264 -b:v 6000k -preset veryfast -maxrate 6000k -bufsize 9000k \
+    -vf "format=yuv420p" -g 60 \
+    -c:a aac -b:a 128k -ar 44100 -threads 4 -cpu-used 0 \
+    -f flv $URL/$STREAM_KEY

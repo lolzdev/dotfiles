@@ -1,0 +1,13 @@
+#!/bin/sh
+
+while true;
+do
+		time=`date +"%H:%M %d/%m/%y"`
+		installed=`pkg_info -A | wc -l | sed 's/ //g'`
+		volume="(`sndioctl -n output.level`*100)/1"
+		volume=`echo $volume | bc`
+
+		xsetroot -name "[ vol: $volume% ] [ pkgs: $installed ] [ $time ]"
+
+		sleep 1
+done

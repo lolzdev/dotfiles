@@ -1,0 +1,18 @@
+#!/bin/sh
+
+case $(echo -n "Take region to clipboard\nTake screen to clipboard\nTake region\nTake screen" | dmenu -l 4) in
+	"Take region to clipboard")
+		maim -s | xclip -selection clipboard -t image/png
+		;;
+	"Take screen to clipboard")
+		maim | xclip -selection clipboard -t image/png
+		;;
+	"Take region")
+		maim -s
+		;;
+	"Take screen")
+		maim
+		;;
+	*)
+		;;
+esac
