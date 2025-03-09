@@ -1,0 +1,30 @@
+IMAPAccount mail
+Host mail.sagittarius-a.org
+port 993
+User lorenzo@sagittarius-a.org
+PassCmd "echo ${PASSWORD:-$(gpg --no-tty -qd ~/.mutt/msmtp-mail.gpg)}"
+SSLType IMAPS
+
+# Remote storage
+IMAPStore mail-remote
+Account mail
+UseNamespace no
+
+# Local storage
+MaildirStore mail-local
+Path ~/Mail/mail/
+Inbox ~/Mail/mail/INBOX
+SubFolders Verbatim
+#Flatten .
+
+Channel mail
+Far :mail-remote:
+Near :mail-local:
+Patterns INBOX INBOX/*
+Expunge None
+Remove None
+CopyArrivalDate yes
+# Sync Pull
+Sync PullNew
+Create Near
+SyncState *
